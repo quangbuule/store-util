@@ -2,14 +2,23 @@
   "name": "store-util",
   "version": "0.0.0",
   "description": "Store Utilities",
-  "main": "lib/index.js",
+  "main": "dist",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "build": "babel src --out-dir dist"
   },
   "author": "Quangbuu Le <quangbuule@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^2.4.1",
-    "reflux": "^0.2.1"
+    "alt": "^0.13.13",
+    "get-class-statics": "0.0.2",
+    "immutable": "^3.6.2",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "babel": "^4.6.6",
+    "chai": "^2.1.1",
+    "mocha": "^2.1.0",
+    "q": "^1.2.0"
   }
 }

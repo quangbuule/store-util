@@ -2,10 +2,11 @@
   "name": "store-util",
   "version": "0.0.0",
   "description": "Store Utilities",
-  "main": "src",
+  "main": "dist",
   "scripts": {
     "test": "mocha",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist && mv dist/mixins ./",
+    "install": "npm run build"
   },
   "author": {
     "name": "Quangbuu Le",
@@ -28,8 +29,8 @@
   "readme": "ERROR: No README data found!",
   "readmeFilename": "README.md",
   "_id": "store-util@0.0.0",
-  "_shasum": "e8f66bee4f59fc5ae69a1e8b19eaa9ce89f5ae7e",
+  "_shasum": "94a216a3ee417bb50be1d88e0f004d4a3e92ba2b",
   "_from": "git://github.com/quangbuule/store-util",
-  "_resolved": "git://github.com/quangbuule/store-util#d88a11dbc8a91a081b862a7fc6e4487dabaf434b",
+  "_resolved": "git+https://github.com/quangbuule/store-util#79459971d5814a094c45698c7d75ee2f72ec0db7",
   "_fromGithub": true
 }

@@ -1,8 +1,6 @@
 'use strict';
 
-var StoreUtil = require('store-util');
-var Item = StoreUtil.Item;
-var Collection = StoreUtil.Collection;
+import StoreUtil, { Item, Collection } from 'store-util';
 
 var stateBindingMixin = {
 

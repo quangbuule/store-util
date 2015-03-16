@@ -1,14 +1,16 @@
 'use strict';
 
-var Status = new Object;
+var Status = {
+  INITIAL: 1,
+  RETRIEVING: 2,
+  DONE: 4,
+  RETRIEVING_MORE: 8,
+  FULL: 16
+};
 
 
 [ 'INITIAL', 'RETRIEVING', 'DONE', 'RETRIEVING_MORE', 'FULL' ].forEach((constName) => {
-  var constValue = constName.toLowerCase().replace(/_([a-z])/,
-    function (_, p1) { return p1.toUpperCase() });
-
   Object.defineProperty(Status, constName, {
-    value: constValue,
     writable: false,
     enumerable: true
   });

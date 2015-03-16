@@ -76,7 +76,6 @@ describe('Item', () => {
       if (newItem === item) {
         return;
       }
-
       calls++;
 
       try {
@@ -100,7 +99,9 @@ describe('Item', () => {
       }
     });
 
-    item.retrieve();
+    item.retrieve(err => {
+      console.log(err.stack);
+    });
   });
 
 });

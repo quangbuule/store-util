@@ -13,6 +13,10 @@ class Item extends Model {
     return super(props);
   }
 
+  toObject() {
+    return this._data.toObject();
+  }
+
   _dataDidRetrieve() {
     var rawData = this._parse();
 
@@ -24,7 +28,7 @@ class Item extends Model {
 Item.idAttribute = 'id';
 
 Item.parse = function () {
-  return this.response.data;
+  return this.payload.response.data;
 }
 
 export default Item;

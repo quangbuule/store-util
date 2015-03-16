@@ -2,7 +2,7 @@
 
 import alt from 'alt';
 import Immutable, { Seq } from 'immutable';
-import { Item } from './';
+import { Status, Item } from './';
 import Model from './model';
 
 class Collection extends Model {
@@ -23,7 +23,7 @@ class Collection extends Model {
   }
 
   map(...args) {
-    return this._setData(this._data.map(...args));
+    return this._data.map(...args);
   }
 
   concat(...args) {
@@ -44,7 +44,9 @@ class Collection extends Model {
     });
 
     this.store.addOrUpdateItems(items);
+
     this.concat(items)
+      ._setStatus(Status.DONE | (this._isFull() && Status.FULL))
       .commitChange();
   }
 }
@@ -52,7 +54,7 @@ class Collection extends Model {
 Collection.idAttribute = 'id';
 
 Collection.parse = function () {
-  return this.response.data;
+  return this.payload.response.data;
 }
 
 Collection.isFull = function (res) {

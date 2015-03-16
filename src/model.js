@@ -6,7 +6,7 @@ import StoreUtil, { Status } from './';
 var schema = new Object;
 
 [ 'store', 'idAttribute', 'status', 'retrieve', 'retrieveMore', 'parse', 'isFull',
-  'response', 'data' ].forEach((propName) => {
+  'payload', 'data' ].forEach((propName) => {
   Object.defineProperty(schema, propName, { value: null });
 });
 
@@ -57,8 +57,8 @@ class Model extends Record(schema) {
     return super.get('store');
   }
 
-  get response() {
-    return super.get('response');
+  get payload() {
+    return super.get('payload');
   }
 
   get _data() {
@@ -77,12 +77,28 @@ class Model extends Record(schema) {
     return super.get('parse');
   }
 
-  get isFull() {
-    return super.get('isFull');
+  get isInitial() {
+    return Boolean(super.get('status') & Status.INITIAL);
   }
 
-  toObject() {
-    return this._data.toObject();
+  get isRetrieving() {
+    return Boolean(super.get('status') & Status.RETRIEVING);
+  }
+
+  get isRetrievingMore() {
+    return Boolean(super.get('status') & Status.RETRIEVING_MORE);
+  }
+
+  get isDone() {
+    return Boolean(super.get('status') & Status.DONE);
+  }
+
+  get isFull() {
+    return Boolean(super.get('status') & Status.FULL);
+  }
+
+  get _isFull() {
+    return super.get('isFull');
   }
 
   get(key) {
@@ -93,8 +109,8 @@ class Model extends Record(schema) {
     return super.set('status', status);
   }
 
-  _setResponse(response) {
-    return super.set('response', response);
+  setPayload(payload) {
+    return super.set('payload', payload);
   }
 
   _setData(newData) {
@@ -122,8 +138,8 @@ class Model extends Record(schema) {
       .commitChange();
 
     newInstance._retrieve()
-      .then((response) => {
-        newInstance._setResponse(response)
+      .then((payload) => {
+        return newInstance.setPayload(payload)
           ._setStatus(Status.DONE)
           ._dataDidRetrieve();
       })
@@ -136,18 +152,17 @@ class Model extends Record(schema) {
 
   retrieveMore(callback) {
     if (!(this instanceof StoreUtil.Collection) ||
-      this.status === Status.RETRIEVING ||
-      this.status === Status.RETRIEVING_MORE ||
-      this.isFull()) {
+      this.isRetrieving ||
+      this.isRetrievingMore ||
+      this._isFull()) {
       return;
     }
-
-    var newInstance = this._setStatus(Status.RETRIEVING_MORE)
+    var newInstance = this._setStatus(Status.DONE | Status.RETRIEVING_MORE)
       .commitChange();
 
     newInstance._retrieveMore()
-      .then((response) => {
-        newInstance._setResponse(response)
+      .then((payload) => {
+        return newInstance.setPayload(payload)
           ._setStatus(Status.DONE)
           ._dataDidRetrieve();
       })

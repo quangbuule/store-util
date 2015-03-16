@@ -2,12 +2,15 @@
   "name": "store-util",
   "version": "0.0.0",
   "description": "Store Utilities",
-  "main": "dist",
+  "main": "src",
   "scripts": {
     "test": "mocha",
     "build": "babel src --out-dir dist"
   },
-  "author": "Quangbuu Le <quangbuule@gmail.com>",
+  "author": {
+    "name": "Quangbuu Le",
+    "email": "quangbuule@gmail.com"
+  },
   "license": "ISC",
   "dependencies": {
     "alt": "^0.13.13",
@@ -20,5 +23,13 @@
     "chai": "^2.1.1",
     "mocha": "^2.1.0",
     "q": "^1.2.0"
-  }
+  },
+  "gitHead": "d88a11dbc8a91a081b862a7fc6e4487dabaf434b",
+  "readme": "ERROR: No README data found!",
+  "readmeFilename": "README.md",
+  "_id": "store-util@0.0.0",
+  "_shasum": "e8f66bee4f59fc5ae69a1e8b19eaa9ce89f5ae7e",
+  "_from": "git://github.com/quangbuule/store-util",
+  "_resolved": "git://github.com/quangbuule/store-util#d88a11dbc8a91a081b862a7fc6e4487dabaf434b",
+  "_fromGithub": true
 }

@@ -101,7 +101,7 @@ describe('Collection', () => {
         }
 
         if (calls === 3) {
-          expect(newCollection.status).to.equal(Status.RETRIEVING_MORE);
+          expect(newCollection.isRetrievingMore).to.be.true;
           return;
         }
 
@@ -125,6 +125,7 @@ describe('Collection', () => {
       id: '__dolor__',
       foo: 'amet'
     }], {
+      id: '__sit_collection__',
       store: store,
       retrieve: simulateAPICall({
         data: [{
@@ -140,7 +141,7 @@ describe('Collection', () => {
       }),
 
       isFull: function () {
-        var response = this.response;
+        var response = this.payload.response;
         return (response.skip + response.limit) >= response.count;
       }
     });
@@ -156,8 +157,8 @@ describe('Collection', () => {
       collection = newCollection;
 
       try {
-        if (collection.status === Status.DONE) {
-          expect(collection.isFull()).to.be.true;
+        if (collection.isDone) {
+          expect(collection.isFull).to.be.true;
           done();
         }
       } catch(err) {

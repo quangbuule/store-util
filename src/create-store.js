@@ -70,9 +70,18 @@ function createStore(StoreModel, iden, ...opts) {
       }
     }
 
-    static bind(id, methodName) {
-      var getPromise = methodName.bind(this);
-      return { id, getPromise };
+    static bindCollection(id, methodName, ...args) {
+      var retrieve = this[methodName].bind(this, ...args);
+      var store = this;
+
+      return { type: Collection, id, store, retrieve };
+    }
+
+    static bindItem(id, methodName, ...args) {
+      var retrieve = this[methodName].bind(this, ...args);
+      var store = this;
+
+      return { type: Item, id, store, retrieve };
     }
 
     onUpdateItem(payload) {

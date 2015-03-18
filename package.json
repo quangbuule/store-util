@@ -5,8 +5,9 @@
   "main": "dist",
   "scripts": {
     "test": "mocha",
-    "build": "babel src --out-dir dist && mv dist/mixins ./",
-    "install": "npm run build"
+    "clean": "rm -rf dist mixins",
+    "build": "npm install babel@4.7.13 && babel src --out-dir dist && mv dist/mixins ./ && npm uninstall babel",
+    "preinstall": "npm run clean && npm run build"
   },
   "author": {
     "name": "Quangbuu Le",
@@ -17,7 +18,7 @@
     "alt": "^0.13.13",
     "get-class-statics": "0.0.2",
     "immutable": "^3.6.2",
-    "lodash": "^2.4.1"
+    "native-promise-only": "^0.7.6-a"
   },
   "devDependencies": {
     "babel": "^4.6.6",

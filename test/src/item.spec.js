@@ -82,14 +82,14 @@ describe('Item', () => {
         if (calls === 1) {
           expect(newItem).not.to.equal(item);
           item = newItem;
-          expect(newItem.status).to.equal(Status.RETRIEVING);
+          expect(newItem.isRetrieving).to.be.true;
           expect(newItem.get('quz')).to.not.equal('bar');
         }
 
         if (calls === 2) {
           expect(newItem).not.to.equal(item);
           item = newItem;
-          expect(newItem.status).to.equal(Status.DONE);
+          expect(newItem.isDone).to.be.true;
           expect(newItem.get('quz')).to.equal('bar');
           done();
         }

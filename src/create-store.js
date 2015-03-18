@@ -6,6 +6,7 @@ import StoreUtil, { alt } from './';
 function createStore(StoreModel, iden, ...opts) {
   var Item = StoreUtil.Item;
   var Collection = StoreUtil.Collection;
+  var Query = StoreUtil.Query;
 
   var items = new Object;
   var collections = new Object;
@@ -82,6 +83,12 @@ function createStore(StoreModel, iden, ...opts) {
       var store = this;
 
       return { type: Item, id, store, retrieve };
+    }
+
+    static requireItem(id, requiredProps) {
+      return new Query()
+        .requireItem(id, requiredProps)
+        .from(this);
     }
 
     onUpdateItem(payload) {

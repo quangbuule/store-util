@@ -20,8 +20,11 @@ class Model extends Record(schema) {
     var isItem = this instanceof Item;
     var isCollection = this instanceof Collection;
 
+    // Model's store
+    props.store = props.store || new Object;
+
     // Model's status
-    props.status = Status.INITIAL;
+    props.status = props.status || Status.INITIAL;
 
     // Model's idAttribute
     props.idAttribute = props.idAttribute || props.store.idAttribute || Item.idAttribute;
@@ -113,6 +116,10 @@ class Model extends Record(schema) {
     return super.set('payload', payload);
   }
 
+  setRetrieve(retrieve) {
+    return super.set('retrieve', retrieve);
+  }
+
   _setData(newData) {
     return super.set('data', newData);
   }
@@ -130,11 +137,11 @@ class Model extends Record(schema) {
   }
 
   retrieve(callback) {
-    if (this.status === Status.RETRIEVING) {
+    if (this.isRetrieving) {
       return;
     }
 
-    var newInstance = this._setStatus(Status.RETRIEVING)
+    var newInstance = this._setStatus(this.status | Status.RETRIEVING)
       .commitChange();
 
     newInstance._retrieve()
@@ -157,7 +164,7 @@ class Model extends Record(schema) {
       this._isFull()) {
       return;
     }
-    var newInstance = this._setStatus(Status.DONE | Status.RETRIEVING_MORE)
+    var newInstance = this._setStatus(this.status | Status.RETRIEVING_MORE)
       .commitChange();
 
     newInstance._retrieveMore()

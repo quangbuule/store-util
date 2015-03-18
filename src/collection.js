@@ -9,7 +9,7 @@ class Collection extends Model {
 
   constructor(rawData, props) {
     var store = props.store;
-    var items = rawData.map((itemRawData) => {
+    var items = (rawData || []).map((itemRawData) => {
       return new Item(itemRawData, { store });
     });
 
@@ -23,15 +23,19 @@ class Collection extends Model {
   }
 
   map(...args) {
-    return this._data.map(...args);
+    return this._setData(this._data.map(...args));
   }
 
   concat(...args) {
     return this._setData(this._data.concat(...args));
   }
 
+  toArray() {
+    return this._data.toArray();
+  }
+
   injectItems() {
-    this.store.addOrUpdateItems(this._data.toArray());
+    this.store.addOrUpdateItems(this.toArray());
     return this._setData(this._data.map(item => this.store.getItem(item.id)));
   }
 

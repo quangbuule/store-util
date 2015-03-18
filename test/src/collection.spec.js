@@ -64,11 +64,11 @@ describe('Collection', () => {
       collection = newCollection;
 
       if (calls === 1) {
-        expect(newCollection.status).to.equal(Status.RETRIEVING);
+        expect(newCollection.isRetrieving).to.be.true;
       }
 
       if (calls === 2) {
-        expect(newCollection.status).to.equal(Status.DONE);
+        expect(newCollection.isDone).to.be.true;
         expect(collection.get(1).get('foo')).to.equal('new sit');
         expect(store.getItem('__ipsum__').get('foo')).to.equal('new sit');
         done();

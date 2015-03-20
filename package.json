@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha",
     "clean": "rm -rf dist mixins",
-    "build": "npm install babel@4.7.13 && babel src --out-dir dist && mv dist/mixins ./ && npm uninstall babel",
-    "preinstall": "npm run clean && npm run build"
+    "build": "babel src --out-dir dist && mv dist/mixins ./",
+    "postinstall": "npm run clean && npm run build"
   },
   "author": {
     "name": "Quangbuu Le",
@@ -25,6 +25,9 @@
     "chai": "^2.1.1",
     "mocha": "^2.1.0",
     "q": "^1.2.0"
+  },
+  "optionalDependencies": {
+    "babel": "^4.6.6"
   },
   "gitHead": "d88a11dbc8a91a081b862a7fc6e4487dabaf434b",
   "readme": "ERROR: No README data found!",

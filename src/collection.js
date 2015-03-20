@@ -55,6 +55,8 @@ class Collection extends Model {
   }
 }
 
+Collection.displayName = 'Collection';
+
 Collection.idAttribute = 'id';
 
 Collection.parse = function () {

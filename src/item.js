@@ -25,6 +25,8 @@ class Item extends Model {
   }
 }
 
+Item.displayName = 'Item';
+
 Item.idAttribute = 'id';
 
 Item.parse = function () {

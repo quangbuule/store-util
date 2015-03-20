@@ -20,7 +20,7 @@ function bindState(stateName, bindingOptions) {
   }
 
   var listener = () => {
-    var newInst = store['get' + type.name](id);
+    var newInst = store[`get${type.displayName}`](id);
 
     if (inst === newInst) {
       return;
@@ -81,7 +81,7 @@ function retrieveCase(stateName, bindingOptions) {
   var status = Status.RETRIEVING; // TODO: Set initial status of instance to retrieving
   var existedInst, inst;
 
-  existedInst = store['get' + type.name](id);
+  existedInst = store[`get${type.displayName}`](id);
   inst = new type(null, { id, store, retrieve });
 
   bindingOptions.inst = inst;
@@ -95,7 +95,7 @@ function retrieveCase(stateName, bindingOptions) {
       .retrieve();
 
   } else {
-    store['add' + type.name](inst);
+    store[`add${type.displayName}`](inst);
     inst.retrieve();
   }
 }

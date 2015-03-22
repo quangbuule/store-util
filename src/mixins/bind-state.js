@@ -51,7 +51,7 @@ function waitForCase(stateName, bindingOptions) {
   var { waitFor, then } = bindingOptions;
   waitFor = typeof waitFor === 'string' ? [ waitFor ] : waitFor;
 
-  Promise.all(waitFor.map(stateName => this._stateDeferred[stateName].promise ))
+  Promise.all(waitFor.map(stateName => this._stateDeferred[stateName].promise))
     .then((insts) => {
       addStateBindingOptions.call(this, stateName, then(...insts));
     });

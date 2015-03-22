@@ -85,7 +85,7 @@ function createStore(StoreModel, iden, ...opts) {
       return { type: Item, id, store, retrieve };
     }
 
-    static requireItem(id, requiredProps) {
+    static reuseItem(id, requiredProps) {
       return new Query()
         .requireItem(id, requiredProps)
         .from(this);

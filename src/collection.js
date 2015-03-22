@@ -43,7 +43,8 @@ class Collection extends Model {
     var rawData = this._parse();
     var items = rawData.map((itemRawData) => {
       return new Item(itemRawData, {
-        store: this.store
+        store: this.store,
+        status: Status.DONE
       });
     });
 

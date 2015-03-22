@@ -132,8 +132,10 @@ class Model extends Record(schema) {
     return this._setData(this._data.merge(...args));
   }
 
-  update(newInstance) {
-    return this.merge(newInstance.toObject());
+  update(newInst) {
+    console.log(this.toObject());
+    return this.merge(newInst._data)
+      ._setStatus(newInst.status || this.status);
   }
 
   retrieve(callback) {
@@ -141,12 +143,12 @@ class Model extends Record(schema) {
       return;
     }
 
-    var newInstance = this._setStatus(this.status | Status.RETRIEVING)
+    var newInst = this._setStatus(this.status | Status.RETRIEVING)
       .commitChange();
 
-    newInstance._retrieve()
+    newInst._retrieve()
       .then((payload) => {
-        return newInstance.setPayload(payload)
+        return newInst.setPayload(payload)
           ._setStatus(Status.DONE)
           ._dataDidRetrieve();
       })
@@ -154,7 +156,7 @@ class Model extends Record(schema) {
         callback && callback(err);
       });
 
-    return newInstance;
+    return newInst;
   }
 
   retrieveMore(callback) {
@@ -164,12 +166,12 @@ class Model extends Record(schema) {
       this._isFull()) {
       return;
     }
-    var newInstance = this._setStatus(this.status | Status.RETRIEVING_MORE)
+    var newInst = this._setStatus(this.status | Status.RETRIEVING_MORE)
       .commitChange();
 
-    newInstance._retrieveMore()
+    newInst._retrieveMore()
       .then((payload) => {
-        return newInstance.setPayload(payload)
+        return newInst.setPayload(payload)
           ._setStatus(Status.DONE)
           ._dataDidRetrieve();
       })
@@ -177,7 +179,7 @@ class Model extends Record(schema) {
         callback && callback(err);
       });
 
-    return newInstance;
+    return newInst;
   }
 
   done() {

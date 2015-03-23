@@ -91,8 +91,8 @@ function retrieveCase(stateName, bindingOptions) {
   if (existedInst && type === Item) {
     existedInst
       .setRetrieve(retrieve)
-      .commitChange()
-      .retrieve();
+      .retrieve()
+      .commitChange();
 
   } else {
     store[`add${type.displayName}`](inst);

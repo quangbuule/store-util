@@ -133,7 +133,6 @@ class Model extends Record(schema) {
   }
 
   update(newInst) {
-    console.log(this.toObject());
     return this.merge(newInst._data)
       ._setStatus(newInst.status || this.status);
   }
@@ -143,7 +142,7 @@ class Model extends Record(schema) {
       return;
     }
 
-    var newInst = this._setStatus(this.status | Status.RETRIEVING)
+    var newInst = this._setStatus(Status.RETRIEVING)
       .commitChange();
 
     newInst._retrieve()

@@ -108,6 +108,19 @@ class Model extends Record(schema) {
     return this._data.get(key);
   }
 
+
+  toObject() {
+    return this._data.toObject();
+  }
+
+  toJSON() {
+    return this._data.toJSON();
+  }
+
+  clear() {
+    return this._setData(this._data.clear(...args));
+  }
+
   _setStatus(status) {
     return super.set('status', status);
   }

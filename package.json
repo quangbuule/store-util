@@ -17,7 +17,7 @@
   "dependencies": {
     "alt": "^0.14.4",
     "get-class-statics": "0.0.2",
-    "immutable": "^3.6.2",
+    "immutable": "^3.7.1",
     "native-promise-only": "^0.7.6-a"
   },
   "devDependencies": {

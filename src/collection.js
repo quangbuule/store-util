@@ -30,6 +30,10 @@ class Collection extends Model {
     return this._setData(this._data.concat(...args));
   }
 
+  reduce(...args) {
+    return this._data.reduce(...args);
+  }
+
   toArray() {
     return this._data.toArray();
   }

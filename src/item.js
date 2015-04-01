@@ -1,14 +1,14 @@
 'use strict';
 
 import alt from 'alt';
-import Immutable, { Map } from 'immutable';
+import Immutable from 'immutable';
 import Model from './model';
 
 class Item extends Model {
 
   constructor(rawData, props) {
     props = props || new Object;
-    props.data = new Map(rawData);
+    props.data = rawData ? Immutable.fromJS(rawData) : Immutable.Map();
 
     return super(props);
   }

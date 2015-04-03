@@ -13,7 +13,9 @@ class Collection extends Model {
       return new Item(itemRawData, { store });
     });
 
-    props.data = new Seq.Indexed(items).map((item) => store.getItem(item.id) || item);
+    props.data = new Seq.Indexed(items).map((item) => {
+      return store.getItem(item.id) || item;
+    });
 
     return super(props);
   }
@@ -55,6 +57,9 @@ class Collection extends Model {
     this.store.addOrUpdateItems(items);
 
     this.concat(items)
+      .map((item) => {
+        return this.store.getItem(item.id) || item;
+      })
       ._setStatus(Status.DONE | (this._isFull() && Status.FULL))
       .commitChange();
   }

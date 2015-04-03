@@ -78,26 +78,19 @@ function reuseCase(stateName, bindingOptions) {
 
 function retrieveCase(stateName, bindingOptions) {
   var { type, id, store, retrieve } = bindingOptions;
-  var status = Status.RETRIEVING; // TODO: Set initial status of instance to retrieving
-  var existedInst, inst;
-
-  existedInst = store[`get${type.displayName}`](id);
-  inst = new type(null, { id, store, retrieve });
-
-  bindingOptions.inst = inst;
-  bindState.call(this, ...arguments);
+  var inst, existedInst = store[`get${type.displayName}`](id);
 
   // Add inst to store
   if (existedInst && type === Item) {
-    existedInst
-      .setRetrieve(retrieve)
-      .retrieve()
-      .commitChange();
+    inst = new type(existedInst.toJSON(), { id, store, retrieve });
 
   } else {
+    inst = new type(null, { id, store, retrieve });
     store[`add${type.displayName}`](inst);
-    inst.retrieve();
   }
+
+  bindingOptions.inst = inst.retrieve();
+  bindState.call(this, ...arguments);
 }
 
 function addStateBindingOptions(stateName, bindingOptions) {

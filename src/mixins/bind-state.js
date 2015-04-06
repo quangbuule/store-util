@@ -10,6 +10,31 @@ function addStateDeferred(stateName) {
   this._stateDeferred[stateName] = new Deferred;
 }
 
+function resolveState(stateName, inst) {
+  var deferred = this._stateDeferred[stateName];
+  var callback = this[`${stateName}DidRetrieve`];
+
+  if (this._stateDeferred[stateName].state !== 'pending') {
+    callback = null;
+  }
+
+  this._stateDeferred[stateName].resolve(inst);
+
+  if (typeof callback === 'function') {
+    callback(inst);
+  }
+}
+
+function stateWillChange(stateName, inst) {
+  var callback = this[`${stateName}WillChange`];
+
+  if (typeof callback === 'function') {
+    callback(inst);
+  }
+
+  this.setState({ [ stateName ]: inst });
+}
+
 function bindState(stateName, bindingOptions) {
   var { type, id, store, inst } = bindingOptions;
 
@@ -29,11 +54,13 @@ function bindState(stateName, bindingOptions) {
     inst = newInst;
 
     if (inst.isDone) {
-      this._stateDeferred[stateName].resolve(inst);
+      resolveState.call(this, stateName, inst);
     }
 
     // TODO: Check if the component is unMounted
-    this.setState({ [ stateName ]: inst });
+    if (this.isMounted()) {
+      stateWillChange.call(this, stateName, inst);
+    }
   };
 
   store.listen(listener);
@@ -53,7 +80,7 @@ function waitForCase(stateName, bindingOptions) {
 
   Promise.all(waitFor.map(stateName => this._stateDeferred[stateName].promise))
     .then((insts) => {
-      addStateBindingOptions.call(this, stateName, then(...insts));
+      setBindStateOptions.call(this, stateName, then(...insts));
     });
 
   this.setState({ [ stateName ]: new Model({ status: Status.RETRIEVING }) });
@@ -69,7 +96,7 @@ function reuseCase(stateName, bindingOptions) {
   // TODO: handle collection case
 
   if (inst.isDone) {
-    this._stateDeferred[stateName].resolve(inst);
+    resolveState.call(this, stateName, inst);
   }
 
   bindingOptions.inst = inst;
@@ -93,7 +120,7 @@ function retrieveCase(stateName, bindingOptions) {
   bindState.call(this, ...arguments);
 }
 
-function addStateBindingOptions(stateName, bindingOptions) {
+function setBindStateOptions(stateName, bindingOptions) {
   var { type, id, store, retrieve, requiredProps } = bindingOptions;
   var { waitFor, then } = bindingOptions;
 
@@ -132,13 +159,11 @@ export default {
 
     Object.keys(stateBindingOptions).forEach(stateName => addStateDeferred.call(this, stateName));
     Object.keys(stateBindingOptions).forEach((stateName) => {
-      addStateBindingOptions.call(this, stateName, stateBindingOptions[stateName]);
+      setBindStateOptions.call(this, stateName, stateBindingOptions[stateName]);
     });
   },
 
-  waitForStateReady(stateName, callback) {
-    return { waitFor: stateName, callback };
-  },
+  setBindStateOptions: setBindStateOptions,
 
   componentWillUnmount() {
     Object.keys(this._stateUnbindMethods).forEach(stateName => this._stateUnbindMethods[stateName]());

@@ -178,6 +178,7 @@ class Model extends Record(schema) {
       this._isFull()) {
       return;
     }
+
     var newInst = this._setStatus(this.status | Status.RETRIEVING_MORE)
       .commitChange();
 

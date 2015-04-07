@@ -38,7 +38,7 @@ function stateWillChange(stateName, inst) {
 function bindState(stateName, bindingOptions) {
   var { type, id, store, inst } = bindingOptions;
 
-  this.setState({ [ stateName ]: inst });
+  stateWillChange.call(this, stateName, inst);
 
   if (id === null || id === undefined) {
     return;

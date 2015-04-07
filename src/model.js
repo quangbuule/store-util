@@ -179,10 +179,7 @@ class Model extends Record(schema) {
       return;
     }
 
-    var newInst = this._setStatus(this.status | Status.RETRIEVING_MORE)
-      .commitChange();
-
-    newInst._retrieveMore()
+    var promise = this._retrieveMore()
       .then((payload) => {
         return newInst.setPayload(payload)
           ._setStatus(Status.DONE)
@@ -191,6 +188,10 @@ class Model extends Record(schema) {
       .catch((err) => {
         callback && callback(err);
       });
+
+    var newInst = this._setStatus(this.status | Status.RETRIEVING_MORE)
+      ._setAbort(promise.abort)
+      .commitChange();
 
     return newInst;
   }

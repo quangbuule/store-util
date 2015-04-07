@@ -5,7 +5,7 @@ import StoreUtil, { Status } from './';
 
 var schema = new Object;
 
-[ 'store', 'idAttribute', 'status', 'retrieve', 'retrieveMore', 'parse', 'isFull',
+[ 'store', 'idAttribute', 'status', 'retrieve', 'retrieveMore', 'abort', 'parse', 'isFull',
   'payload', 'data' ].forEach((propName) => {
   Object.defineProperty(schema, propName, { value: null });
 });
@@ -62,6 +62,10 @@ class Model extends Record(schema) {
 
   get payload() {
     return super.get('payload');
+  }
+
+  get abort() {
+    return super.get('abort');
   }
 
   get _data() {
@@ -133,6 +137,10 @@ class Model extends Record(schema) {
     return super.set('retrieve', retrieve);
   }
 
+  _setAbort(abort) {
+    return super.set('abort', abort);
+  }
+
   _setData(newData) {
     return super.set('data', newData);
   }
@@ -146,11 +154,7 @@ class Model extends Record(schema) {
     if (this.isRetrieving) {
       return;
     }
-
-    var newInst = this._setStatus(Status.RETRIEVING)
-      .commitChange();
-
-    newInst._retrieve()
+    var promise = this._retrieve()
       .then((payload) => {
         return newInst.setPayload(payload)
           ._setStatus(Status.DONE)
@@ -159,6 +163,10 @@ class Model extends Record(schema) {
       .catch((err) => {
         callback && callback(err);
       });
+
+    var newInst = this._setStatus(Status.RETRIEVING)
+      ._setAbort(promise.abort)
+      .commitChange();
 
     return newInst;
   }

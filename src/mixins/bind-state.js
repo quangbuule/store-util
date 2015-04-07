@@ -57,7 +57,6 @@ function bindState(stateName, bindingOptions) {
       resolveState.call(this, stateName, inst);
     }
 
-    // TODO: Check if the component is unMounted
     if (this.isMounted()) {
       stateWillChange.call(this, stateName, inst);
     }

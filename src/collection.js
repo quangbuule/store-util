@@ -24,14 +24,6 @@ class Collection extends Model {
     return this._data.size;
   }
 
-  map(...args) {
-    return this._setData(this._data.map(...args));
-  }
-
-  concat(...args) {
-    return this._setData(this._data.concat(...args));
-  }
-
   injectItems() {
     this.store.addOrUpdateItems(this.toArray());
     return this._setData(this._data.map(item => this.store.getItem(item.id)));

@@ -137,14 +137,6 @@ class Model extends Record(schema) {
     return super.set('data', newData);
   }
 
-  set(...args) {
-    return this._setData(this._data.set(...args));
-  }
-
-  merge(...args) {
-    return this._setData(this._data.merge(...args));
-  }
-
   update(newInst) {
     return this.merge(newInst._data)
       ._setStatus(newInst.status || this.status);
@@ -205,5 +197,27 @@ class Model extends Record(schema) {
   }
 
 }
+
+[ 'getIn', 'hasIn',
+  'toJSON', 'toObject', 'toArray',
+  'toMap', 'toList', 'toSeq' ]
+  .forEach(method => {
+    Object.defineProperty(Model.prototype, method, {
+      value: function (...args) {
+        return this._data[method](...args);
+      }
+    });
+  });
+
+[ 'set', 'delete', 'clear', 'merge', 'mergeDeep',
+  'setIn', 'deleteIn', 'updateIn', 'mergeIn', 'mergeDeepIn',
+  'map', 'filter', 'filterNot', 'concat' ]
+  .forEach(method => {
+    Object.defineProperty(Model.prototype, method, {
+      value: function(...args) {
+        return this._setData(this._data[method](...args));
+      }
+    });
+  });
 
 export default Model;

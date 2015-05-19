@@ -220,7 +220,7 @@ class Model extends Record(schema) {
 
 [ 'set', 'delete', 'clear', 'merge', 'mergeDeep',
   'setIn', 'deleteIn', 'updateIn', 'mergeIn', 'mergeDeepIn',
-  'map', 'filter', 'filterNot', 'concat' ]
+  'map', 'reduce', 'filter', 'filterNot', 'concat' ]
   .forEach(method => {
     Object.defineProperty(Model.prototype, method, {
       value: function(...args) {

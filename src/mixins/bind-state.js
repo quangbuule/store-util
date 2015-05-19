@@ -123,6 +123,10 @@ function setBindStateOptions(stateName, bindingOptions) {
   var { type, id, store, retrieve, requiredProps } = bindingOptions;
   var { waitFor, then } = bindingOptions;
 
+  if (!this._stateDeferred[stateName]) {
+    addStateDeferred.call(this, stateName);
+  }
+
   if (waitFor) {
     return waitForCase.call(this, ...arguments);
   }
@@ -156,7 +160,6 @@ export default {
     this._stateUnbindMethods = new Object;
     this._stateDeferred = new Object;
 
-    Object.keys(stateBindingOptions).forEach(stateName => addStateDeferred.call(this, stateName));
     Object.keys(stateBindingOptions).forEach((stateName) => {
       setBindStateOptions.call(this, stateName, stateBindingOptions[stateName]);
     });
@@ -168,3 +171,4 @@ export default {
     Object.keys(this._stateUnbindMethods).forEach(stateName => this._stateUnbindMethods[stateName]());
   }
 };
+

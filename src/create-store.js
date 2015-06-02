@@ -13,6 +13,10 @@ function createStore(StoreModel, iden, ...opts) {
 
   class BaseStore {
 
+    static get items() {
+      return items;
+    }
+
     static addItem(item) {
       items[item.id] = item;
     }
@@ -46,6 +50,10 @@ function createStore(StoreModel, iden, ...opts) {
 
       item.update(newItem)
         .commitChange();
+    }
+
+    static get collections() {
+      return collections;
     }
 
     static addCollection(collection) {
